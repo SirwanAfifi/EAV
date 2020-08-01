@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EVA-Model", "EVA-Model.csproj", "{B31E7159-2643-46EF-9D7F-233E47627563}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B31E7159-2643-46EF-9D7F-233E47627563}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B31E7159-2643-46EF-9D7F-233E47627563}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B31E7159-2643-46EF-9D7F-233E47627563}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B31E7159-2643-46EF-9D7F-233E47627563}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
