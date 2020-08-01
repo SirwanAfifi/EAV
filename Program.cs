@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using EVA_Model.Data;
 using EVA_Model.Models;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,17 +15,21 @@ namespace EVA_Model
 
             var dbContext = serviceProvider.GetService<MyDbContext>();
 
-            foreach (var i in Enumerable.Range(1, 100))
+            var attributes = typeof(Employee).GetProperties().Where(x => x.Name != "Id").Select(x => x.Name);
+            var employees = dbContext.Employees;
+            var enumerable = attributes as string[] ?? attributes.ToArray();
+            foreach (var employee in employees)
             {
-                var faker = new Bogus.Faker();
-                dbContext.Employees.Add(new Employee
+                foreach (var attribute in enumerable)
                 {
-                    FirstName = faker.Person.FirstName,
-                    LastName = faker.Person.LastName,
-                    DateOfBirth = faker.Person.DateOfBirth
-                });
+                    dbContext.EmployeeAttributes.Add(new EmployeeAttribute
+                    {
+                        EmployeeId = employee.Id,
+                        AttributeName = attribute,
+                        AttributeValue =  employee.GetType().GetProperty(attribute)?.GetValue(employee)?.ToString()
+                    });
+                }
             }
-
             dbContext.SaveChanges();
         }
         
