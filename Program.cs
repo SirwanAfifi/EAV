@@ -4,8 +4,10 @@ using System.IO;
 using System.Linq;
 using EVA_Model.Data;
 using EVA_Model.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MySql.Data.EntityFrameworkCore.Extensions;
 
 namespace EVA_Model
 {
@@ -21,23 +23,32 @@ namespace EVA_Model
 
             var dbContext = serviceProvider.GetService<MyDbContext>();
 
-            var attributes = typeof(Employee).GetProperties().Where(x => x.Name != "Id").Select(x => x.Name);
-            var employees = dbContext.Employees;
-            var enumerable = attributes as string[] ?? attributes.ToArray();
-            foreach (var employee in employees)
-            {
-                foreach (var attribute in enumerable)
+            string[] columnNames = {"FirstName", "LastName", "DateOfBirth"};
+            var employees = dbContext.EmployeeAttributes
+                .Where(x => 
+                            dbContext.EmployeeAttributes
+                                .Where(i => i.AttributeName == "DateOfBirth")
+                                .Select(eId => eId.EmployeeId).Contains(x.EmployeeId) &&
+                            columnNames.Contains(x.AttributeName))
+                .GroupBy(x => x.EmployeeId)
+                .Select(g => new
                 {
-                    dbContext.EmployeeAttributes.Add(new EmployeeAttribute
-                    {
-                        EmployeeId = employee.Id,
-                        AttributeName = attribute,
-                        AttributeValue =  employee.GetType().GetProperty(attribute)?.GetValue(employee)?.ToString()
-                    });
-                }
-                
+                    FirstName = g.Max(f => f.AttributeName == "FirstName" ? f.AttributeValue : ""),
+                    LastName = g.Max(f => f.AttributeName == "LastName"? f.AttributeValue : ""),
+                    DateOfBirth = g.Max(f => f.AttributeName == "DateOfBirth"? f.AttributeValue : ""),
+                    Id = g.Key
+                })
+                .ToList()
+                .Where(x => DateTime.ParseExact(x.DateOfBirth, "yyyy-MM-dd", CultureInfo.InvariantCulture) > DateTime.Now.AddYears(-25));
+
+
+            var endDate = DateTimeOffset.Now.AddYears(Convert.ToInt32(-2));
+            var normalTypes = dbContext.Employees.Where(x => x.DateOfBirth > endDate).ToList();
+            
+            foreach (var employee in normalTypes)
+            {
+                Console.WriteLine($"{employee.FirstName} - {employee.DateOfBirth}");
             }
-            dbContext.SaveChanges();
         }
         
         static Func<DateTime> RandomDayFunc()
@@ -58,7 +69,7 @@ namespace EVA_Model
                 .Build();
 
             // Add access to generic IConfigurationRoot
-            services.AddSingleton(Configuration);
+            services.AddSingleton<IConfigurationRoot>(Configuration);
         }
     }
 }
