@@ -1,6 +1,6 @@
 using System;
 
-namespace EVA_Model.Models
+namespace EAV.Models
 {
     public class Employee
     {

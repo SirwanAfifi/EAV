@@ -2,14 +2,14 @@
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using EVA_Model.Data;
-using EVA_Model.Models;
+using EAV.Data;
+using EAV.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MySql.Data.EntityFrameworkCore.Extensions;
 
-namespace EVA_Model
+namespace EAV
 {
     class Program
     {

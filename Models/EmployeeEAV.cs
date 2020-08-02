@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace EVA_Model.Models
+namespace EAV.Models
 {
     public class EmployeeEav
     {

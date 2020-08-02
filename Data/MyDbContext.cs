@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using EVA_Model.Models;
+using EAV.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
@@ -8,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace EVA_Model.Data
+namespace EAV.Data
 {
     public class MyDbContext : DbContext
     {

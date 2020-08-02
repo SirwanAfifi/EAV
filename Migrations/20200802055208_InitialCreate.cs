@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using MySql.Data.EntityFrameworkCore.Metadata;
 
-namespace EVA_Model.Migrations
+namespace EAV.Migrations
 {
     public partial class InitialCreate : Migration
     {

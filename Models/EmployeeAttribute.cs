@@ -1,4 +1,4 @@
-namespace EVA_Model.Models
+namespace EAV.Models
 {
     public class EmployeeAttribute
     {
