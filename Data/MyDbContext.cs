@@ -22,6 +22,7 @@ namespace EAV.Data
 
         public DbSet<Employee> Employees { get; set; }
         public DbSet<EmployeeEav> EmployeeEav { get; set; }
+        public DbSet<EmployeeJsonAttribute> EmployeeJsonAttributes { get; set; }
         public DbSet<EmployeeAttribute> EmployeeAttributes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
