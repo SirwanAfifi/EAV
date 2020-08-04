@@ -28,27 +28,16 @@ namespace EAV
 
             var dbContext = serviceProvider.GetService<MyDbContext>();
 
-            var attributes = typeof(Employee).GetProperties().Where(x => x.Name != "Id").Select(x => x.Name);
-            var employees = dbContext.Employees;
-            var enumerable = attributes as string[] ?? attributes.ToArray();
+            var employees = dbContext.Employees.FromSqlRaw(
+                @"SELECT EmployeeId AS Id, Attributes ->> '$.FirstName' AS FirstName, 
+Attributes ->> '$.LastName' AS LastName,
+Attributes ->> '$.DateOfBirth' AS DateOfBirth FROM efcoresample.EmployeeJsonAttributes
+      WHERE Attributes ->> '$.DateOfBirth' > DATE_SUB(CURRENT_DATE(), INTERVAL {0} YEAR)", 25);
 
             foreach (var employee in employees)
             {
-                var employeeObject = enumerable.ToDictionary(attribute => attribute,
-                    attribute =>
-                    {
-                        var value = employee.GetType().GetProperty(attribute)?.GetValue(employee)?.ToString();
-                        return attribute == "DateOfBirth" ? DateTime.Parse(value).ToString("yyyy-MM-dd") : value;
-                    });
-                var jsonObject = (JsonSerializer.Serialize(employeeObject));
-                dbContext.EmployeeJsonAttributes.Add(new EmployeeJsonAttribute
-                {
-                    EmployeeId = employee.Id,
-                    Attributes = jsonObject
-                });
+                Console.WriteLine(employee.DateOfBirth);
             }
-
-            dbContext.SaveChanges();
         }
         
         private static void ConfigureServices(IServiceCollection services)

@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json;
+
 
 namespace EAV.Models
 {
